@@ -6,31 +6,19 @@ use Illuminate\Http\Request;
 
 class SettingController extends Controller
 {
-    public function store(Request $request)
-    {
-        $request->validate([
-            'app_name' => 'nullable|string', 
-            'logo' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
-            'user_name' => 'nullable|string', 
-            'email' => 'nullable|email'
-        ]);
+   public function updateSettings(Request $request)
+   {
+    // we ;pp[ through the data sent from React
 
-        $logoPath = null; 
-
-        if($request->hasFile('logo')){
-            $logoPath = $request->file('logo')->store('logos', 'public'); 
-        }
-
-        $setting = Setting::create([
-            'app_name' => $request->app_name, 
-            'logo' => $logoPath,
-            'user_name' => $request->user_name,
-            'email' => $request->email
-        ]);
-
-        return response()->json([
-            'message' => 'Settings saved successfully',
-            'data' => $setting
-        ]); 
+    foreach($request->all() as $key => $value){
+        Setting::updateOrCreate(
+            ['key' => $key],
+            ['value' => $value]
+        );
     }
+
+    return response()->json([
+        'message' => 'Settings updated successfully'
+    ]);
+   }
 }

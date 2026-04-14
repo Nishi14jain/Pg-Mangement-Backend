@@ -13,10 +13,8 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->string('app_name')->nullable();
-            $table->string('logo')->nullable();
-            $table->string('user_name')->nullable();
-            $table->string("email")->nullable(); 
+            $table->string('key')->unique();
+            $table->string('value')->nullable();
             $table->timestamps();
         });
     }
